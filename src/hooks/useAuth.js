@@ -1,10 +1,9 @@
+import { useAuthContext } from "../context/AuthContext";
+
 export default function useAuth() {
+    const { user } = useAuthContext();
     return {
-        isAuthenticated: true,
-        user: {
-            name: "Admin User",
-            role: "OWNER",
-            tenant: "Acme Corp",
-        },
+        isAuthenticated: !!localStorage.getItem("token"),
+        user,
     };
 }
