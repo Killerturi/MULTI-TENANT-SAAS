@@ -1,21 +1,37 @@
-import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Users, Folder, BarChart3, Crown } from "lucide-react";
+import Skeleton from "./Skeleton";
+
+
+const icons = {
+    Users: Users,
+    Projects: Folder,
+    Usage: BarChart3,
+    Plan: Crown,
+};
 
 export default function StatCard({ title, value, loading }) {
+    const Icon = icons[title];
+
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-xl border dark:border-gray-700 p-5 hover:shadow-md transition">
+        <motion.div
+            whileHover={{ y: -4 }}
+            transition={{ type: "spring", stiffness: 300 }}
+            className="rounded-2xl border bg-white dark:bg-zinc-900 p-5 shadow-sm"
+        >
             {loading ? (
-                <div className="animate-pulse">
-                    <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2 mb-2"></div>
-                    <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
-                </div>
+                <Skeleton />
             ) : (
                 <>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{title}</p>
-                    <p className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                    <div className="flex items-center justify-between">
+                        <p className="text-sm text-gray-500 dark:text-gray-400">{title}</p>
+                        <Icon className="w-5 h-5 text-indigo-500" />
+                    </div>
+                    <h2 className="mt-3 text-3xl font-semibold text-gray-900 dark:text-white">
                         {value}
-                    </p>
+                    </h2>
                 </>
             )}
-        </div>
+        </motion.div>
     );
 }

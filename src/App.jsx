@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AppLayout from "./layouts/AppLayout";
 
@@ -14,29 +13,27 @@ import Settings from "./pages/Settings";
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
 
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <AppLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<Dashboard />} />
-            <Route path="projects" element={<Projects />} />
-            <Route path="users" element={<Users />} />
-            <Route path="analytics" element={<Analytics />} />
-            <Route path="billing" element={<Billing />} />
-            <Route path="settings" element={<Settings />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <AppLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Dashboard />} />
+          <Route path="projects" element={<Projects />} />
+          <Route path="users" element={<Users />} />
+          <Route path="analytics" element={<Analytics />} />
+          <Route path="billing" element={<Billing />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
