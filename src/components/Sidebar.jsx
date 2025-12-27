@@ -19,7 +19,7 @@ const menu = [
 
 export default function Sidebar() {
     return (
-        <aside className="w-64 bg-white dark:bg-gray-900 border-r dark:border-gray-700 px-4 py-6">
+        <aside className="w-64 bg-white dark:bg-gray-900  dark:border-gray-700 px-4 py-6">
             <div className="text-lg font-semibold tracking-tight mb-8 text-gray-900 dark:text-gray-100">
                 ⚡ SaaS Panel
             </div>

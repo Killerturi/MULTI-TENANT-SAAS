@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import ProjectCard from "../components/projects/ProjectCard";
 import CreateProjectModal from "../components/projects/CreateProjectModal";
+import toast from "react-hot-toast";
+
 
 export default function Projects() {
     const [showModal, setShowModal] = useState(false);
@@ -29,6 +31,7 @@ export default function Projects() {
 
     const createProject = (project) => {
         setProjects([...projects, project]);
+        toast.success("Project created successfully");
     };
 
     const toggleArchive = (id) => {

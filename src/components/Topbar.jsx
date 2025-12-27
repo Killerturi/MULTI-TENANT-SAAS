@@ -8,7 +8,7 @@ export default function Topbar() {
     const { user } = useAuthContext();
 
     return (
-        <header className="h-14 bg-white dark:bg-gray-900 border-b dark:border-gray-700 flex items-center justify-between px-6">
+        <header className="h-14 bg-white dark:bg-gray-900  dark:border-gray-700 flex items-center justify-between px-6">
 
             {/* 🔁 Tenant Switcher (Animated) */}
             <TenantSwitcher />
