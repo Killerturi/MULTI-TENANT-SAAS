@@ -1,18 +1,19 @@
 import { Plus, UserPlus, CreditCard, Rocket } from "lucide-react";
 
 const actions = [
-    { label: "New Project", icon: Plus },
-    { label: "Invite User", icon: UserPlus },
-    { label: "Billing", icon: CreditCard },
-    { label: "Upgrade", icon: Rocket },
+    { key: "new-project", label: "New Project", icon: Plus },
+    { key: "invite-user", label: "Invite User", icon: UserPlus },
+    { key: "billing", label: "Billing", icon: CreditCard },
+    { key: "upgrade", label: "Upgrade", icon: Rocket },
 ];
 
-export default function QuickActions() {
+export default function QuickActions({ onAction }) {
     return (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {actions.map(({ label, icon: Icon }) => (
+            {actions.map(({ key, label, icon: Icon }) => (
                 <button
-                    key={label}
+                    key={key}
+                    onClick={() => onAction(key)}
                     className="rounded-xl border bg-white dark:bg-zinc-900 p-4 hover:bg-gray-50 dark:hover:bg-zinc-800 transition"
                 >
                     <Icon className="w-5 h-5 text-indigo-500 mb-2" />

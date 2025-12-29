@@ -29,6 +29,29 @@ export default function Dashboard() {
         setShowModal(false);
     };
 
+    const handleQuickAction = (action) => {
+        switch (action) {
+            case "new-project":
+                setShowModal(true);
+                break;
+
+            case "invite-user":
+                toast("Invite User modal coming next 🚀");
+                break;
+
+            case "billing":
+                toast("Redirecting to Billing page 💳");
+                break;
+
+            case "upgrade":
+                toast("Upgrade flow coming soon ⭐");
+                break;
+
+            default:
+                break;
+        }
+    };
+
 
     return (
         <>
@@ -70,7 +93,7 @@ export default function Dashboard() {
 
                 {/* OWNER ONLY */}
                 <Protected allow={["OWNER"]}>
-                    <QuickActions />
+                    <QuickActions onAction={handleQuickAction}/>
                 </Protected>
 
                 {/* Everyone */}
