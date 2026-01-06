@@ -1,10 +1,10 @@
 import User from "./user.model.js";
 import Tenant from "../tenants/tenant.model.js";
 import { PLAN_LIMITS } from "../../config/planLimits.js";
-import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 /* =====================================================
-   INVITE USER (OWNER / ADMIN)
+   INVITE USER (OWNER / ADMIN) – EMAIL TOKEN FLOW
    ===================================================== */
 export const inviteUser = async (req, res) => {
     try {
@@ -21,9 +21,8 @@ export const inviteUser = async (req, res) => {
             return res.status(404).json({ message: "Tenant not found" });
         }
 
-        /* 3️⃣ Enforce USER LIMIT based on PLAN */
+        /* 3️⃣ Enforce USER LIMIT */
         const limits = PLAN_LIMITS[tenant.plan];
-
         const userCount = await User.countDocuments({
             tenantId: req.tenantId
         });
@@ -34,7 +33,7 @@ export const inviteUser = async (req, res) => {
             });
         }
 
-        /* 4️⃣ Check if user already exists in this tenant */
+        /* 4️⃣ Check existing user */
         const existingUser = await User.findOne({
             email,
             tenantId: req.tenantId
@@ -46,29 +45,23 @@ export const inviteUser = async (req, res) => {
                 .json({ message: "User already exists in this tenant" });
         }
 
-        /* 5️⃣ Generate temporary password */
-        const tempPassword = Math.random().toString(36).slice(-8);
-        const hashedPassword = await bcrypt.hash(tempPassword, 10);
+        /* 5️⃣ Generate invite token */
+        const inviteToken = crypto.randomBytes(32).toString("hex");
 
-        /* 6️⃣ Create user */
+        /* 6️⃣ Create invited user (NO PASSWORD YET) */
         const user = await User.create({
             name,
             email,
             role,
-            password: hashedPassword,
-            tenantId: req.tenantId
+            tenantId: req.tenantId,
+            inviteToken,
+            inviteExpires: Date.now() + 24 * 60 * 60 * 1000 // 24 hours
         });
 
-        /* 7️⃣ Respond */
+        /* 7️⃣ Send response (email sending later) */
         res.status(201).json({
-            message: "User invited successfully",
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role
-            },
-            tempPassword // later replace with email invite
+            message: "Invite sent successfully",
+            inviteLink: `http://localhost:3000/accept-invite?token=${inviteToken}`
         });
     } catch (error) {
         console.error("Invite User Error:", error);
